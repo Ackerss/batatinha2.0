@@ -45,7 +45,8 @@ let gameState = {
         numPlayers: 2,
         speed: 1.0,
         sensitivity: 50, // 1 a 100
-        cameraFacing: 'user'
+        cameraFacing: 'user',
+        phrase: 'Batatinha frita um, dois, três!'
     },
     round: 1,
     referenceFrames: [] // array guardando os imageData de referencia de cada zona
@@ -107,6 +108,12 @@ btnStart.addEventListener('click', async () => {
     gameState.config.speed = parseFloat(settings.speed.value);
     gameState.config.sensitivity = parseInt(settings.sensitivity.value);
     gameState.config.cameraFacing = settings.cameraFacing.value;
+
+    // Pegar o select 'phrase' (vamos buscá-lo do DOM direto aqui pois não estava no objeto settings inicial)
+    const phraseSelect = document.getElementById('phrase');
+    if (phraseSelect) {
+        gameState.config.phrase = phraseSelect.value;
+    }
 
     const hasCamera = await initCamera();
     if (hasCamera) {
@@ -301,8 +308,8 @@ function triggerGreenLight() {
     statusElements.text.textContent = "PODE ANDAR!";
     statusElements.text.className = "status-text green";
 
-    // Narração
-    const msg = new SpeechSynthesisUtterance("Batatinha frita um, dois, três!");
+    // Narração usando a frase escolhida nas configurações
+    const msg = new SpeechSynthesisUtterance(gameState.config.phrase);
     msg.lang = 'pt-BR';
     msg.rate = gameState.config.speed;
 
