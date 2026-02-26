@@ -228,7 +228,7 @@ function checkMovement() {
 
     // Se alguém foi eliminado, verificar se jogo acabou para evitar chamadas duplicadas
     if (anyoneEliminatedThisFrame && gameState.players.every(p => p.eliminated)) {
-        pauseCycle();
+        stopGameEngine(); // Usa a nova função forte de parada que criamos
         showGameOverHUD("TODOS ELIMINADOS!", "Que pena. As estátuas caíram!");
     }
 }
@@ -285,6 +285,17 @@ function stopGame() {
         gameState.animationFrameId = null;
     }
     stopCamera();
+}
+
+function stopGameEngine() {
+    // Essa funcão PARA o JS de olhar a câmera, útil para game overs
+    gameState.isPlaying = false;
+    window.speechSynthesis.cancel();
+    clearTimeout(gameState.loopTimer);
+    if (gameState.animationFrameId) {
+        cancelAnimationFrame(gameState.animationFrameId);
+        gameState.animationFrameId = null;
+    }
 }
 
 function pauseCycle() {
@@ -354,8 +365,8 @@ function triggerRedLight() {
                     if (gameState.round >= 5) {
                         const survivors = gameState.players.reduce((acc, curr, index) => !curr.eliminated ? acc.concat(index + 1) : acc, []);
                         if (survivors.length > 0) {
+                            stopGameEngine();
                             showGameOverHUD("GANHARAM!", `Sobrevivente(s): Jogador(es) ${survivors.join(', ')}`);
-                            pauseCycle();
                             return;
                         }
                     }

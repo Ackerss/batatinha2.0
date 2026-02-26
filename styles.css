@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 #app {
@@ -46,6 +46,8 @@ body {
     transition: opacity 0.5s ease, transform 0.5s ease;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    /* Permite scroll no celular se a tela for pequena */
 }
 
 .screen.hidden {
@@ -62,11 +64,13 @@ body {
     z-index: 10;
 }
 
-/* --- Setup Screen --- */
 #setup-screen {
-    justify-content: center;
+    justify-content: flex-start;
+    /* Para não centralizar e cortar o topo em telas muito pequenas */
     align-items: center;
     padding: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
 .glass-card {
