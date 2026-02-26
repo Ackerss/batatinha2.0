@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batatinha Frita 1, 2, 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Tela Inicial / Configurações -->
+        <main id="setup-screen" class="screen active">
+            <div class="glass-card">
+                <div class="logo-container">
+                    <span class="logo-emoji">🍟</span>
+                    <h1>Batatinha Frita<br><span class="highlight">1, 2, 3</span></h1>
+                </div>
+
+                <p class="subtitle">O jogo clássico agora com câmera e narração automática!</p>
+
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <label for="players">Número de Jogadores:</label>
+                        <div class="custom-select">
+                            <select id="players">
+                                <option value="1">1 Jogador</option>
+                                <option value="2" selected>2 Jogadores</option>
+                                <option value="3">3 Jogadores</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="speed">Velocidade da Narração:</label>
+                        <div class="custom-select">
+                            <select id="speed">
+                                <option value="0.7">Lenta</option>
+                                <option value="1.0" selected>Normal</option>
+                                <option value="1.3">Rápida</option>
+                                <option value="1.6">Muito Rápida</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="camera-facing">Câmera:</label>
+                        <div class="custom-select">
+                            <select id="camera-facing">
+                                <option value="user" selected>Frontal</option>
+                                <option value="environment">Traseira</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="sensitivity">Sensibilidade de Movimento:</label>
+                        <div class="range-container">
+                            <input type="range" id="sensitivity" min="1" max="100" value="50">
+                            <div class="range-labels">
+                                <span>Menor (Move Mais)</span>
+                                <span>Maior (Qualquer Pisco Fica Mudo)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-start" class="btn-primary">
+                    <span class="btn-text">INICIAR JOGO</span>
+                    <span class="btn-icon">▶</span>
+                </button>
+                <p id="setup-error" class="error-text hidden">Você precisa permitir o acesso à câmera para jogar.</p>
+            </div>
+        </main>
+
+        <!-- Tela do Jogo -->
+        <main id="game-screen" class="screen hidden">
+            <header class="game-header">
+                <button id="btn-back" class="btn-icon-only" title="Voltar" aria-label="Voltar">⬅</button>
+                <div id="status-indicator" class="status-indicator">
+                    <div class="light green-light active"></div>
+                    <div class="light red-light"></div>
+                    <span id="status-text" class="status-text">PREPARANDO...</span>
+                </div>
+                <div class="score-container">
+                    <span class="score-label">Rodada:</span>
+                    <span id="round-number" class="score-value">1</span>
+                </div>
+            </header>
+
+            <div class="camera-container">
+                <video id="webcam" autoplay playsinline muted></video>
+                <canvas id="game-canvas"></canvas>
+                <div id="player-zones" class="player-zones">
+                    <!-- Gerado via JS dependendo dos jogadores -->
+                </div>
+            </div>
+
+            <div id="game-message" class="game-message hidden">
+                <h2 id="message-title"></h2>
+                <p id="message-subtitle"></p>
+                <button id="btn-restart" class="btn-secondary hidden">Tentar Novamente</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
