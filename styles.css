@@ -17,6 +17,11 @@
     padding: 0;
 }
 
+/* Classe utilitária genérica para esconder qualquer elemento */
+.hidden {
+    display: none !important;
+}
+
 body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--bg-color);
@@ -51,6 +56,8 @@ body {
 }
 
 .screen.hidden {
+    display: flex !important;
+    /* Override do .hidden genérico para manter a animação */
     opacity: 0;
     pointer-events: none;
     transform: scale(0.95);
