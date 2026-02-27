@@ -36,6 +36,18 @@
                     </div>
 
                     <div class="setting-item">
+                        <label for="total-rounds">Rodadas (Tempo):</label>
+                        <div class="custom-select">
+                            <select id="total-rounds">
+                                <option value="3">3 Rodadas (Rápido)</option>
+                                <option value="5" selected>5 Rodadas (Normal)</option>
+                                <option value="8">8 Rodadas (Longo)</option>
+                                <option value="10">10 Rodadas (Maratona)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
                         <label for="phrase">Frase da Narração:</label>
                         <div class="custom-select">
                             <select id="phrase">
@@ -102,6 +114,8 @@
                 <div class="score-container">
                     <span class="score-label">Rodada:</span>
                     <span id="round-number" class="score-value">1</span>
+                    <span class="score-value">/</span>
+                    <span id="round-total" class="score-value">5</span>
                 </div>
             </header>
 
