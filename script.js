@@ -69,7 +69,15 @@ function safeTimeout(fn, ms) {
 function clearAllTimers() {
     gameState.timers.forEach(id => clearTimeout(id));
     gameState.timers = [];
-    window.speechSynthesis.cancel();
+    // Não cancelamos a voz logo de cara aqui para os anúncios de Game Over tocarem normalmente!
+}
+
+function announce(text) {
+    if (!gameState.isPlaying) return; // Se usuário voltou pro menu, não fala
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = 'pt-BR';
+    msg.rate = 1.1; // Fala um tiquinho mais rápido pra dar dinâmica
+    window.speechSynthesis.speak(msg);
 }
 
 // --- Câmera ---
@@ -214,6 +222,9 @@ function eliminatePlayer(index) {
     gameState.players[index].eliminated = true;
     const zoneElement = document.getElementById(`zone-${index}`);
     if (zoneElement) zoneElement.classList.add('eliminated');
+
+    // Fala que foi eliminado
+    announce(`Jogador ${index + 1} eliminado!`);
 }
 
 // --- Zonas dos Jogadores ---
@@ -241,6 +252,7 @@ function setupZones() {
 // --- Ciclo Principal do Jogo ---
 function startGame() {
     // Limpar tudo de ciclos anteriores
+    window.speechSynthesis.cancel(); // Aborta falas perdidas
     clearAllTimers();
 
     // Esconder HUD de game over
@@ -341,8 +353,11 @@ function triggerRedLight() {
 
                 if (survivors.length > 0) {
                     showGameOverHUD("PARABÉNS! 🏆", `Vencedor(es): Jogador(es) ${survivors.join(', ')}`);
+                    let text = survivors.length > 1 ? `Parabéns! Os jogadores ${survivors.join(' e ')} venceram o jogo!` : `Parabéns! O jogador ${survivors[0]} venceu o jogo!`;
+                    announce(text);
                 } else {
                     showGameOverHUD("TODOS ELIMINADOS!", "Ninguém sobreviveu até o final.");
+                    announce("Todos os jogadores foram eliminados! Ninguém ganhou.");
                 }
                 return;
             }
@@ -390,8 +405,10 @@ btnStart.addEventListener('click', async () => {
 });
 
 btnBack.addEventListener('click', () => {
+    window.speechSynthesis.cancel(); // Aborta fala
     clearAllTimers();
     gameState.phase = 'idle';
+    gameState.isPlaying = false;
     stopRenderLoop();
     stopCamera();
 
